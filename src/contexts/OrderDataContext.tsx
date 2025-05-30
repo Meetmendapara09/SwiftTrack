@@ -1,10 +1,45 @@
 
 "use client";
 import type { AuthenticatedUser, UserRole } from '@/lib/types';
-import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext,, useState, useEffect, ReactNode, useCallback } from 'react';
 import { createClient } from '@/lib/supabaseClient'; 
 import type { AuthError, User as SupabaseAuthUser, SignUpWithPasswordCredentials } from '@supabase/supabase-js';
 import type { Database } from '@/lib/database.types'; 
+import {useContext } from "react";
+
+interface OrderData {
+  orderId: string;
+  status: string;
+  items?: string[];
+  [key: string]: any;
+}
+
+interface OrderDataContextType {
+  order: OrderData | null;
+  setOrder: (order: OrderData | null) => void;
+}
+
+const OrderDataContext = createContext<OrderDataContextType | undefined>(undefined);
+
+const OrderDataProvider = ({ children }: { children: ReactNode }) => {
+  const [order, setOrder] = useState<OrderData | null>(null);
+
+  return (
+    <OrderDataContext.Provider value={{ order, setOrder }}>
+      {children}
+    </OrderDataContext.Provider>
+  );
+};
+
+const useOrderData = (): OrderDataContextType => {
+  const context = useContext(OrderDataContext);
+  if (!context) {
+    throw new Error("useOrderData must be used within an OrderDataProvider");
+  }
+  return context;
+};
+
+export { OrderDataContext, OrderDataProvider, useOrderData };
 
 interface AuthContextType {
   user: AuthenticatedUser | null;
