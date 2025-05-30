@@ -1,7 +1,7 @@
 
 "use client";
 import type { AuthenticatedUser, UserRole } from '@/lib/types';
-import React, { createContext,, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useState, useEffect, ReactNode, useCallback } from 'react';
 import { createClient } from '@/lib/supabaseClient'; 
 import type { AuthError, User as SupabaseAuthUser, SignUpWithPasswordCredentials } from '@supabase/supabase-js';
 import type { Database } from '@/lib/database.types'; 
